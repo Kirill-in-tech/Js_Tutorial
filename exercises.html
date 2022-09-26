@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        display: grid;
+        grid-template-columns: 400px 400px;
+      }
+      button {
+        border: none;
+        border-radius: 3px;
+        background-color: lightskyblue;
+        color: white;
+        font-size: 18px;
+        font-weight: 500;        
+        margin: 0 5px;
+        transition: all 150ms;
+      }
+      button:hover {
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+      }
+      #cart {
+        margin-left: 5px;
+        border-radius: 5px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        font-size: 16px;
+        font-weight: 500;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <div id="counter"></div>
+    <button onclick="counterUp();">Up</button>
+    <button onclick="counterDown();">Down</button>
+    <br><br>
+    <input id="text-input" type="text" placeholder="write smth here...">
+    <button onclick="addToPage();">Add to Page</button>
+    <br><br>
+    <button id="todo-button" onclick="changeText();">Click me</button>
+    </div>
+
+    <div>
+      <button id ="apple" onclick="addGoods(apple);">Apple</button>
+      <button id="tomato" onclick="addGoods(tomato);">Tomato</button>
+      <button id="eggs" onclick="addGoods(eggs);">Eggs</button>
+      <button onclick="clearCart();">Clear</button>
+      <br><br>
+      <div id="cart"></div>
+      <br>
+      <div id="receipt"></div>
+      <br>
+      <div id="my-cart"></div>
+      <div id="cart-total"></div>
+
+    </div>
+
+    <script>
+      let total = 0;
+      const fruits = {
+        Apple: 5,
+        Banana: 6,
+        Pear: 3,
+        Plum: 7
+      };
+      createCart(fruits);
+
+      function addTotal (event) {
+        const addButton = event.target;
+        total += parseInt(addButton.id);
+        console.log(total);
+        
+        const cartTotal = document.getElementById('cart-total');
+        cartTotal.innerHTML = '';
+        const totalNumber = document.createElement('div');
+        totalNumber.innerText = 'Total cost: ' + total; 
+        cartTotal.appendChild(totalNumber);
+      }
+
+      function createCart (goods) {
+
+        const myCart = document.getElementById('my-cart');
+
+        Object.keys(goods).forEach (function (item) {
+          const element = document.createElement('div');
+          element.innerText = item + ' $' + goods[item];
+          element.style = 'margin-bottom: 5px';
+          const button = document.createElement('button');
+          button.innerText = 'Add';
+          button.id = goods[item];
+          // console.log(button.id);
+          button.onclick = addTotal;
+          element.appendChild(button);
+
+          myCart.appendChild(element);
+        });
+
+      }
+
+
+
+
+
+      let cartArray = [{
+        name: 'Apple',
+        price: 10,
+        quantity: 3
+      }, {
+        name: 'Pear',
+        price: 15,
+        quantity: 5
+      }, {
+        name: 'Banana',
+        price: 20,
+        quantity: 4
+      }];
+      displayReceipt(cartArray);
+      // cartTotal(cartArray);
+
+      function cartTotal(goods) {
+        let priceTotal = 0;
+        goods.forEach(function (item){ 
+          priceTotal += item.price;
+        });
+        console.log(priceTotal);
+      };
+      function displayReceipt (goods) {
+        document.getElementById('receipt').innerHTML = '';
+        let total = 0;
+        goods.forEach (function (item) {
+          const element = document.createElement('div');
+          element.innerText = item.name + ' $' +  item.price + ' * ' + 
+          item.quantity + ' = $' + item.price*item.quantity;
+          document.getElementById('receipt').appendChild(element);
+          total += item.price*item.quantity
+        });
+        const element = document.createElement('div');
+        element.innerText = 'Cart total = $' + total;
+        document.getElementById('receipt').appendChild(element);
+      };
+
+      
+
+
+
+
+
+
+      function addGoods (goods) {
+        const element = document.createElement('div');
+        element.innerText = goods.innerText;
+        cart.appendChild(element);
+      }
+
+      function clearCart () {
+        cart.innerHTML = '';
+      }
+
+
+
+      document.title = 'My exercises';
+      
+      function addToPage () {
+				let element = document.createElement('div');
+				element.innerText = document.getElementById('text-input').value;
+				document.body.appendChild(element);
+			}
+
+			let count = 0;
+			document.getElementById('counter').innerText = count;
+
+			function counterUp () {
+				count = parseInt(document.getElementById('counter').innerText);
+				count += 1;
+				document.getElementById('counter').innerText = count;
+			}
+
+			function counterDown () {
+				count = parseInt(document.getElementById('counter').innerText);
+				count -= 1;
+				document.getElementById('counter').innerText = count;
+			}	
+
+			function changeText () {
+				let button = document.getElementById('todo-button');
+				button.innerText = 'Done';
+			}
+
+			// function addTodo (todo) {			
+			// 	let element = document.createElement('div');
+			// 	element.innerText = todo;
+			// 	document.body.appendChild(element);
+			// }
+
+			// function addButton (buttonText) {
+			// 	let element = document.createElement('button');
+			// 	element.innerText = buttonText;
+			// 	document.body.appendChild(element);
+			// }		
+
+			// addTodo(todo1);
+			// addTodo(todo2);
+			// addTodo(todo3);
+			// addTodo(todo4);
+
+			// addButton(button);
+
+
+
+			// function toUpperStr (str) {
+			// 	console.log(str.toUpperCase());
+			// }
+			// toUpperStr('kirill');
+
+			// function toCenti (length) {
+			// 	console.log(length/2.54);
+			// }
+			// toCenti(10);
+
+      // let array = ['cat', 'dog', 'cow'];
+      
+      // function toUpper (arr) {
+      // 	let newArray = [];
+      // 	arr.forEach(function (str) {
+      // 		newArray.push(str.toUpperCase());	
+      // 	});
+      // 	console.log(newArray);
+      // }
+      // toUpper(array);
+
+      // function arrayDouble (arr) {
+      // 	let newArray1 = [];
+      // 	arr.forEach(function (str) {
+      // 		newArray1.push(str, str);	
+      // 	});
+      // 	console.log(newArray1);
+      // }
+      // arrayDouble(array);
+       
+      // let temps = [12, -4, 45, -21, 0, 5];
+      // console.log(temps);
+      // let result = [];
+      // function aboveFreezing (array) {
+      //   result = array.filter (temp => temp > 0)
+      // }
+      // aboveFreezing(temps);
+      // console.log(result);
+
+      /*numbers*/
+      // const numbers = [2, 4, 6, 1, -6, 10, 65, -59];
+      // function max (numbers) {
+      //   let num = numbers[0];
+      //   numbers.forEach(function (number) {
+      //     if (num < number) {
+      //       num = number;
+      //     }
+      //   });
+      //   console.log(num);
+      // }
+      // function min (numbers) {
+      //   let num = numbers[0];
+      //   numbers.forEach(function (number) {
+      //     if (num > number) {
+      //       num = number;
+      //     }
+      //   });
+      //   console.log(num);
+      // }
+      // function smallest (numbers) {
+      //   let num = numbers[0];
+      //   numbers.forEach(function (number) {
+      //     if (number >= 0) {
+      //       if (num > number) {
+      //         num = number;
+      //       }
+      //     }
+      //   });
+      //   console.log(num);
+      // }
+      // max(numbers);
+      // min(numbers);
+      // smallest(numbers);
+
+
+      /*strings*/
+      
+      let fruit = ['apple','apple','orange','cherry','banana',
+      'cherry','apple','apple','orange'];
+
+      // console.log(fruit);
+      
+      // console.log(pickApples(fruit));
+      // console.log(pickLastApples(fruit));
+
+      const pickFruits = (fruit) => {
+        let appleCount = 0;
+        let orangeCount = 0;
+        fruit = fruit.filter (function (fr) {
+          if (appleCount < 2 || orangeCount < 1) {
+            if (fr === 'apple') {
+              appleCount += 1;
+              return false;
+            } else if (fr === 'orange') {
+                orangeCount += 1;  
+              } else {
+                  return true;
+                }
+          } else {
+              return true;
+            }            
+        });
+        return fruit;
+      }
+      // console.log(pickFruits(fruit));
+      
+      function pickApples (fruit) {
+        let appleCount = 0;
+        fruit = fruit.filter (function (fr) {
+          if (appleCount < 2) {
+            if (fr === 'apple') {
+              appleCount += 1;
+              return false; 
+            } else {
+                return true;
+              }
+          } else {
+              return true;
+            }            
+        });
+        return fruit;
+      }
+
+      function pickLastApples (fruit) {
+        let appleCount = 0;
+        fruit.reverse();
+        fruit = fruit.filter (function (fr) {
+          if (appleCount < 2) {
+            if (fr === 'apple') {
+              appleCount += 1;
+              return false;
+            } else {
+                return true;
+              }
+          } else {
+              return true;
+            }            
+        });
+        fruit.reverse();
+        return fruit;
+      }
+
+      let array = [{
+        id: 2,
+        name: 'B',
+        date: '2020-10-02'
+      }, {
+        id: 1,
+        name: 'A',
+        date: '2020-10-01'
+      }, {
+        id: 4,
+        name: 'D',
+        date: '2020-10-04'
+      }, {
+        id: 3,
+        name: 'C',
+        date: '2020-10-03'
+      }];
+
+      const sortArray = array => {
+        for (let i = 1; i < array.length; i++) {
+          let obj = array[i];
+          let k = i;
+          for (let j = i - 1; j >= 0; j--)  {
+            if (obj.date > array[j].date) {   
+              array[k] = array[j];
+              array[j] = obj; 
+              k--;   
+            } else {
+              break;
+              }
+          }        
+        }
+      }
+      sortArray(array);
+      console.log(array);
+
+
+    </script>
+  </body> 
+</html>
