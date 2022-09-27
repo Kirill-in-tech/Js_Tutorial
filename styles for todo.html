@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>List Practice</title>
+    <style>
+      .container {
+        font-family: Arial;
+        font-size: 18px;
+        line-height: 40px;
+        list-style-type:none;
+        padding: 0;
+        width: 400px;
+        margin: auto;
+        display: flex;
+        flex-direction: column;        
+        justify-content: start;
+      }
+      /* .container .task:nth-child(odd),
+      .container .task:nth-child(odd) .delete-button {
+        background-color: rgb(250, 250, 250);
+      } */
+
+      .task {
+        /* border: 1px solid black; */
+        border-radius: 5px;
+        display: flex;
+        align-items: center;    
+        margin: 3px 0 3px 0;
+        box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
+        position: relative;
+        transition: all 150ms;
+      }
+      .task:hover,
+      .task:hover .delete-button,
+      .task:hover .edit-button {
+        background-color: rgb(223, 222, 222);
+      }
+      .title {
+        display: inline-block;
+        /* background-color: lightcyan; */
+        flex: 1;
+        transition: all 150ms;
+        padding-left: 5px;
+      }
+      .date {
+        display: inline-block;
+        font-size: 16px;
+        transition: all 150ms;
+        padding: 0 10px 0 10px;
+
+      }
+      .delete-button {
+        background-color: white;
+        border: none;
+        padding: 5px;
+        transition: all 150ms;
+        font-size: 20px;
+        height: 40px;
+        width: 40px;
+        border-top-right-radius: 5px ;
+        border-bottom-right-radius: 5px;
+        cursor: pointer;
+        z-index: 10;
+      }
+      .edit-button {
+        background-color: white;
+        border: none;
+        padding: 5px;
+        transition: all 150ms;
+        font-size: 20px;
+        height: 40px;
+        width: 40px;
+        /* border-top-right-radius: 5px ;
+        border-bottom-right-radius: 5px; */
+        cursor: pointer;
+        z-index: 10;
+      }
+      .delete-button:hover  {
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.6); 
+      }
+      .edit-button:hover  {
+        box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.6); 
+      }
+      .checkbox {
+        min-width: 8px;        
+        opacity: 0;
+        zoom: 200%;
+        z-index: 10;
+        cursor: pointer;
+      }
+      .newBox {
+        position: absolute;
+        /* background-color: lightcoral; */
+        z-index: 9;
+        height: 40px;
+        width: 40px;
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+        transition: all 150ms;
+        cursor: pointer;
+      }
+      .newBox:after {
+        left: 18px;
+        top: 8px;
+        width: 6px;
+        height: 13px;
+        border: solid white;
+        border-width: 0 3px 3px 0;
+        transform: rotate(35deg);
+        content: "";
+        position: absolute;
+        display: flex;
+      }
+      .checkbox:hover {
+        background-color: lightgrey;
+      }
+      .checkbox:checked ~ .title,
+      .checkbox:checked ~ .date,      
+      .checkbox:checked ~ .checkbox,
+      .checkbox:checked ~ .newBox {
+        background-color: rgb(65, 65, 65);
+        color: white;
+        text-decoration: line-through;
+      }
+      .checkbox:checked ~ .delete-button {
+        background-color: rgb(65, 65, 65);
+        color: white;
+      }
+      .checkbox:checked ~ .delete-button:hover {
+        box-shadow: 0 0 3px rgba(0, 0, 0, 0.9); 
+      } 
+      .checkbox:checked ~ .edit-button {
+        background-color: rgb(65, 65, 65);
+        color: white;
+      }
+      .checkbox:checked ~ .edit-button:hover {
+        box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.9); 
+      } 
+      .checkbox:checked ~ .newBox:after {
+        display:flex;
+      }
+
+    </style>
+  </head>
+  <body>
+
+    <script>
+      
+      let todos = [{        
+        title: 'do homework',    
+        dueDate: '2022-09-26'    
+      }, {        
+        title: 'cook dinner',
+        dueDate: '2022-09-27'
+      }, {        
+        title: 'walk the dog',        
+        dueDate: '2022-09-28'
+      }];
+
+      const list = document.createElement('div');
+      list.className = 'container';
+      document.body.appendChild(list);
+
+      todos.forEach(todo => {
+        const taskFull = document.createElement('div');
+        taskFull.className = 'task-full';
+
+        const task = document.createElement('div');
+        task.className = 'task';
+
+        const text = document.createElement('div');
+        text.className = 'title';
+        text.innerText = todo.title;     
+
+        const date = document.createElement('div');
+        date.className = 'date';
+        date.innerText = todo.dueDate;
+
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.className = 'checkbox';
+
+        const newCheckbox = document.createElement('div');
+        newCheckbox.className = 'newBox';
+
+        const deleteButton = document.createElement('button');
+        deleteButton.className = 'delete-button';
+        deleteButton.innerText = '\u00D7';
+        
+        const editButton = document.createElement('button');
+        editButton.className = 'edit-button';
+        editButton.innerText = '✎';
+
+        task.prepend(newCheckbox);
+        task.prepend(checkbox);
+        task.appendChild(text);
+        task.appendChild(date);
+        task.appendChild(editButton);
+        task.appendChild(deleteButton);        
+        list.appendChild(task);
+      });
+
+    </script>
+
+  </body>
+</html>
