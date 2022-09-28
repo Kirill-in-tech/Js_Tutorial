@@ -1,0 +1,323 @@
+body {
+  font-family: Arial;
+}
+.container {
+  display: flex;
+  flex-direction: column;  
+  width: 600px;
+  margin: auto;
+}
+
+/* ADD */
+
+.add {
+  display: flex;
+  height: 40px;
+  margin: 20px 0 30px 0;
+}
+#todo-title {
+  flex: 1;
+  border: none;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  padding: 0 0 0 10px;
+  margin: 0 1px 0 0;
+  font-family: Arial;
+  font-size: 18px;
+}
+#todo-title::placeholder {
+  font-family: Arial;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.3);
+}
+#todo-title:hover {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+}
+#todo-title:focus {
+  outline: 1px solid rgb(65, 65, 65);
+}
+#date-picker {
+  font-family: Arial;
+  font-size: 14px;
+  border: none;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
+  padding: 0 5px 0 5px;
+  margin: 0 1px 0 1px;
+}
+#date-picker:hover {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+}
+#date-picker:focus {
+  outline: 1px solid rgb(65, 65, 65);
+}
+.add-button {
+  font-size: 16px;
+  width: 80px;
+  border: 1px solid white;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.6);
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  background-color: rgb(65, 65, 65);
+  color: white;
+  transition: all 150ms;
+}
+.add-button:hover {
+  opacity: 0.8;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+}
+.add-button:active {
+  opacity: 0.5;
+}
+
+/* SORT BUTTONS*/
+
+.sort-buttons {
+  display: flex;
+  justify-content: end;
+}
+.up-arrow {
+  width: 35px;
+  height: 35px;
+  margin: 0 3px 5px 2px;
+  background-color: rgb(222, 222, 222);
+  border: 1px solid rgb(65, 65, 65);
+  border-radius: 3px;
+  color: rgb(65, 65, 65);
+  transition: all 150ms;
+}
+.up-arrow:hover {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.6);
+  font-size: 18px;
+}
+.down-arrow {
+  width: 35px;
+  height: 35px;
+  margin: 0 2px 5px 2px;
+  background-color: rgb(222, 222, 222);
+  border: 1px solid rgb(65, 65, 65);
+  border-radius: 3px;
+  color: rgb(65, 65, 65);
+  transition: all 150ms;
+}
+.down-arrow:hover {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.6);
+  font-size: 18px;
+}
+
+
+/* LIST */
+
+.list {
+  font-family: Arial;
+  font-size: 18px;
+  line-height: 40px;
+  list-style-type:none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;        
+  justify-content: start;
+}
+/* each separate to-do */
+.task {
+  border-radius: 5px;
+  display: flex;
+  align-items: center;    
+  margin: 3px 0 3px 0;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
+  position: relative;
+  transition: all 150ms;
+}
+.task:hover,
+.task:hover .delete-button,
+.task:hover .edit-button,
+.task:hover .edit-todo,
+.task:hover .edit-date {
+  background-color: rgb(223, 222, 222);
+}
+.title {
+  flex: 1;
+  transition: all 150ms;
+  padding-left: 5px;
+}
+.no-title {
+  flex: 1;
+  transition: all 150ms;
+  padding-left: 5px;
+  font-size: 14px;
+  font-style: italic;
+}
+.date {
+  width: 125px;
+  font-size: 16px;
+  transition: all 150ms;
+  padding: 0 0px 0 0px;
+  text-align: center;
+}
+.no-date {
+  width: 125px;
+  font-size: 14px;
+  transition: all 150ms;
+  padding: 0 0px 0 0px;
+  text-align: center;
+  font-style: italic;
+}
+.delete-button {
+  background-color: white;
+  border: none;
+  padding: 5px;
+  transition: all 150ms;
+  font-size: 20px;
+  height: 40px;
+  width: 40px;
+  border-top-right-radius: 5px ;
+  border-bottom-right-radius: 5px;
+  cursor: pointer;
+  z-index: 10;
+}
+.delete-button:hover  {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.6); 
+}
+.delete-button:active {
+  zoom: 105%;
+}
+.edit-button {
+  background-color: white;
+  border: none;
+  padding: 0 0 3px 0px;
+  transition: all 150ms;
+  font-size: 18px;
+  height: 40px;
+  width: 40px;
+  cursor: pointer;
+  z-index: 10;
+}
+.edit-button:hover  {
+  box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.6); 
+}
+.edit-button:active {
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.6); 
+}
+.checkbox {
+  min-width: 8px;        
+  opacity: 0;
+  zoom: 200%;
+  z-index: 10;
+  cursor: pointer;
+}
+.coverBox {
+  position: absolute;
+  /* background-color: lightcoral; */
+  z-index: 9;
+  height: 40px;
+  width: 40px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  transition: all 150ms;
+  cursor: pointer;
+}
+.coverBox:after {
+  left: 18px;
+  top: 8px;
+  width: 6px;
+  height: 13px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  transform: rotate(35deg);
+  content: "";
+  position: absolute;
+  display: flex;
+}
+.checkbox:hover {
+  background-color: lightgrey;
+}
+.checkbox:checked ~ .title,
+.checkbox:checked ~ .no-title,
+.checkbox:checked ~ .date,      
+.checkbox:checked ~ .no-date,
+.checkbox:checked ~ .checkbox,
+.checkbox:checked ~ .coverBox {
+  background-color: rgb(65, 65, 65);
+  color: white;
+  text-decoration: line-through;
+}
+.checkbox:checked .task {
+  background-color: rgb(65, 65, 65);
+}
+
+.checkbox:checked ~ .delete-button {
+  background-color: rgb(65, 65, 65);
+  color: white;
+}
+.checkbox:checked ~ .delete-button:hover {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.9); 
+} 
+.checkbox:checked ~ .delete-button:active {
+  zoom: 105%;
+}
+.checkbox:checked ~ .edit-button {
+  background-color: rgb(65, 65, 65);
+  color: white;
+}
+.checkbox:checked ~ .edit-button:hover {
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.9); 
+} 
+.checkbox:checked ~ .coverBox:after {
+  display:flex;
+}
+
+/* UPDATE line */
+.edit-todo {
+  flex: 1;
+  height: 40px;
+  font-family: Arial;
+  font-size: 18px;
+  border: none;
+  transition: all 150ms;
+  padding: 0 0 0 5px;
+  background-color: rgb(223, 222, 222);
+}
+.edit-todo:focus {
+  outline: none;
+  text-decoration:dotted ;
+}
+.edit-date {
+  border: none;
+  height: 40px;
+  font-family: Arial;
+  font-size: 16px;
+  transition: all 150ms;
+  background-color: rgb(223, 222, 222);
+  
+}
+.edit-date:focus {
+  outline: none;
+}
+
+.update-button {
+  font-size: 16px;
+  width: 80px;
+  height: 40px;
+  border: 1px solid white;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  background-color: rgb(65, 65, 65);
+  color: white;
+  transition: all 150ms;
+}
+.update-button:hover {
+  opacity: 0.8;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+}
+.update-button:active {
+  opacity: 0.5;
+}
+.edit-pencil {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  padding: 0 0 0 0px;
+  color: white;
+  background-color: rgb(223, 222, 222);
+}

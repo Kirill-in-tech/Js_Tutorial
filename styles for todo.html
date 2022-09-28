@@ -65,13 +65,11 @@
       .edit-button {
         background-color: white;
         border: none;
-        padding: 5px;
+        padding: 0 0 3px 0px;
         transition: all 150ms;
-        font-size: 20px;
+        font-size: 18px;
         height: 40px;
         width: 40px;
-        /* border-top-right-radius: 5px ;
-        border-bottom-right-radius: 5px; */
         cursor: pointer;
         z-index: 10;
       }
@@ -162,8 +160,7 @@
       document.body.appendChild(list);
 
       todos.forEach(todo => {
-        const taskFull = document.createElement('div');
-        taskFull.className = 'task-full';
+
 
         const task = document.createElement('div');
         task.className = 'task';

@@ -2,28 +2,19 @@
 	<html>
 		<head>
 			<title>Kirill's Todo List</title>
+      <link rel="stylesheet" href="todo.css">
 		</head>
 
 	<body>
-    <div style="
-      display: flex;
-      flex-direction: column;
-      width: 600px;
-      align-items: center;
-      justify-content: center;
-      margin: auto;
-      line-height: 30px;
-      ">
-        <div>
-          <input id="todo-title" type="text" placeholder="add your todo"/>
-          <input id="date-picker" type="date" />
-          <input type="time">
-          <button onclick="addTodo();">Add Todo</button>
-        </div>
-        <br>
-        <div id="todo-list"></div>
-    </div>
-		
+    <main class="container">
+          <section class="add">
+            <input id="todo-title" type="text" placeholder="add your to-do..."/>
+            <input id="date-picker" type="date" />          
+            <button class="add-button" onclick="addTodo();">Add</button>
+          </section>
+          
+          <section id="todo-list" class="list"></section>
+    </main>
 		
 		
 		<script>
@@ -64,7 +55,7 @@
 
       // Creates a todo
       const createTodo = (title, dueDate) => {
-        const id = '' + new Date().getTime();
+        const id = '' + new Date().getTime();        
         todos.push({
           title: title,
           dueDate: dueDate,
@@ -76,7 +67,6 @@
       }
       // Deletes a todo
       const removeTodo = idToDelete => {
-
         todos = todos.filter(todo => {
           return todo.id !== idToDelete;
         });
@@ -135,24 +125,63 @@
         }
       }
 
+      // Sorts in ascending order
+      const sortAsc = () => {
+        for (let i = 1; i < todos.length; i++) {
+          let object = todos[i];
+          let k = i;
+          for (let j = i-1; j >= 0; j--) {
+            if (object.dueDate < todos[j].dueDate) {
+              todos[k] = todos[j];
+              todos[j] = object;
+              k--;
+            } else {
+              break;
+            }
+          }
+        }
+      }
 
       // VIEW SECTION
 			const addElement = () => {
-				// reset our todo-list
-				document.getElementById('todo-list').innerHTML ='';
-
-        sortDesc();
+				// reset our todo-list	
+        document.getElementById('todo-list').innerHTML ='';
         
 				todos.forEach (todo => {
           const element = document.createElement('div');
+          element.className = 'task';
 
           // renders in normal mode
           if (todo.editMode === false) {
-            element.innerText = todo.title + ' ' + todo.dueDate;
+
+            const text = document.createElement('div');            
+            if (todo.title === '' || todo.title === '(no title)') {
+                todo.title = '(no title)';
+                text.className = 'no-title';  
+            } else {
+                text.className = 'title';
+              }            
+            text.innerText = todo.title;
+            element.appendChild(text);
+
+            const date = document.createElement('div');
+            if (todo.dueDate === '' || todo.dueDate === '(no date)') {
+                todo.dueDate = '(no date)';
+                date.className = 'no-date';  
+            } else {
+                date.className = 'date';
+              }            
+            date.innerText = todo.dueDate;
+            element.appendChild(date);
+           
+
+            const coverCheckbox = document.createElement('div');
+            coverCheckbox.className = 'coverBox';
+            element.prepend(coverCheckbox);
 
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
-            checkbox.style = 'margin-right: 5px';
+            checkbox.className = 'checkbox';
             checkbox.id = todo.id;  
             checkbox.onchange = checkTodo;
             if (todo.isDone === true) 
@@ -162,14 +191,14 @@
             element.prepend(checkbox);
 
             const editButton = document.createElement('button');
-            editButton.innerText = 'Edit';
-            editButton.style = 'margin-left: 10px';
+            editButton.innerHTML = '&#9998;';
+            editButton.className = 'edit-button';
             editButton.onclick = editTodo(todo);
             element.append(editButton);
 
             const deleteButton = document.createElement('button');
-            deleteButton.innerText = 'Delete';
-            deleteButton.style = 'margin-left: 5px';
+            deleteButton.innerText = '\u00D7';
+            deleteButton.className = 'delete-button';
             deleteButton.onclick = deleteTodo(todo);          
             element.append(deleteButton);
           }
@@ -177,27 +206,38 @@
           else {
             const editTextbox = document.createElement('input');
             editTextbox.value = todo.title;
+            editTextbox.onsubmit = updateEnter();
+            editTextbox.className = 'edit-todo';
             editTextbox.id = 'edit-text-' + todo.id;
             element.append(editTextbox);
             
             const datePicker = document.createElement('input');
             datePicker.type = 'date';
+            datePicker.className = 'edit-date';
             datePicker.value = todo.dueDate;
-            datePicker.id = 'edit-date-' + todo.id;            
-            datePicker.style = 'margin-left: 5px';            
+            datePicker.id = 'edit-date-' + todo.id;          
             element.append(datePicker);
 
             const updateButton = document.createElement('button');
             updateButton.innerText = 'Update';
-            updateButton.style = 'margin-left: 5px';
+            updateButton.className = 'update-button';
             updateButton.dataset.id = todo.id;
             updateButton.onclick = updateTodo;
             element.append(updateButton);
+
+            const editPencil = document.createElement('div');
+            editPencil.innerHTML = '&#9998;';
+            editPencil.className = 'edit-pencil';
+            element.prepend(editPencil);
           }
 
           const todoList = document.getElementById('todo-list');
-          todoList.appendChild(element);
+          todoList.appendChild(element);          
 			  });
+
+        if (todos.length !== 0) {
+          sortButtons();
+        }
 			}
 
       const clearInput = () => {
@@ -208,11 +248,32 @@
         datePicker.value = '';
       }
 
+      const sortButtons = () => {
+        const sortButtonArea = document.createElement('div');
+        sortButtonArea.className = 'sort-buttons';
+
+        const upArrow = document.createElement('button');
+        upArrow.className = 'up-arrow';
+        upArrow.innerHTML = '&#8593';
+        upArrow.onclick = sortDateAsc;
+
+        const downArrow = document.createElement('button');
+        downArrow.className = 'down-arrow';
+        downArrow.innerHTML = '&#8595';
+        downArrow.onclick = sortDateDesc;
+
+        sortButtonArea.appendChild(downArrow);
+        sortButtonArea.appendChild(upArrow);        
+        
+        const todoList = document.getElementById('todo-list');
+        todoList.prepend(sortButtonArea);
+      }
+
       // CONTROLLER SECTION
 			const addTodo = () => {
 				const textbox = document.getElementById('todo-title');
-				const title = textbox.value;
-
+        const title = textbox.value;
+        				
         const datePicker = document.getElementById('date-picker');
         const dueDate = datePicker.value;
 
@@ -238,7 +299,7 @@
         addElement();
       }
 
-      const editTodo = (todoToEdit) => {
+      const editTodo = todoToEdit => {
         return () => {
           toEditMode(todoToEdit.id);
           addElement();
@@ -259,10 +320,31 @@
         addElement();        
       }
 
+      const updateEnter = event => {
+        console.log('hello');
+        // const textbox = event.target;
+        // const idToUpdate = textbox.id;
+        // const textToUpdate = textbox.value;
+
+        // const datePicker = document.getElementById('edit-date-' + idToUpdate);
+        // const dateToUpdate = datePicker.value;
+        
+        // changeTodo(idToUpdate, textToUpdate, dateToUpdate);
+        // addElement();
+      }
+
+      const sortDateAsc = () => {        
+          sortAsc();
+          addElement();        
+      }
+
+      const sortDateDesc = () => {        
+          sortDesc();
+          addElement();        
+      }
 
       // Main code
       window.onload = addElement();
-
 
 		</script>
 	</body>
