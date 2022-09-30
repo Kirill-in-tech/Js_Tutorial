@@ -1,23 +1,3 @@
-<!DOCTYPE html>
-	<html>
-		<head>
-			<title>Kirill's Todo List</title>
-      <link rel="stylesheet" href="todo.css">
-		</head>
-
-	<body>
-    <main class="container">
-          <section class="add">
-            <input id="todo-title" type="text" placeholder="add your to-do..."/>
-            <input id="date-picker" type="date" />          
-            <button class="add-button" onclick="addTodo();">Add</button>
-          </section>
-          
-          <section id="todo-list" class="list"></section>
-    </main>
-		
-		
-		<script>
       // MODEL SECTION
       let todos;
       let savedTodos = JSON.parse(localStorage.getItem('todos'));
@@ -345,7 +325,3 @@
 
       // Main code
       window.onload = addElement();
-
-		</script>
-	</body>
-</html>

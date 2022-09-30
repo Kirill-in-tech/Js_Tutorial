@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+	<html>
+		<head>
+			<title>Kirill's Todo List</title>
+      <link rel="stylesheet" href="todo_final.css">
+
+      <style>
+        body {
+          font-family: Arial;
+        }
+        .container {
+          display: flex;
+          flex-direction: column;  
+          width: 600px;
+          margin: auto;
+        }
+
+        /* ADD */
+
+        .add {
+          display: flex;
+          height: 40px;
+          margin: 20px 0 30px 0;
+        }
+        #todo-title {
+          flex: 1;
+          border: none;
+          box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
+          border-top-left-radius: 5px;
+          border-bottom-left-radius: 5px;
+          padding: 0 0 0 10px;
+          margin: 0 1px 0 0;
+          font-family: Arial;
+          font-size: 18px;
+        }
+        #todo-title::placeholder {
+          font-family: Arial;
+          font-size: 16px;
+          color: rgba(0, 0, 0, 0.3);
+        }
+        #todo-title:hover {
+          box-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+        }
+        #todo-title:focus {
+          outline: 1px solid rgb(65, 65, 65);
+        }
+        #date-picker {
+          font-family: Arial;
+          font-size: 14px;
+          border: none;
+          box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
+          padding: 0 5px 0 5px;
+          margin: 0 1px 0 1px;
+        }
+        #date-picker:hover {
+          box-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+        }
+        #date-picker:focus {
+          outline: 1px solid rgb(65, 65, 65);
+        }
+        .add-button {
+          font-size: 16px;
+          width: 80px;
+          border: 1px solid white;
+          box-shadow: 0 0 3px rgba(0, 0, 0, 0.6);
+          border-top-right-radius: 5px;
+          border-bottom-right-radius: 5px;
+          background-color: rgb(65, 65, 65);
+          color: white;
+          transition: all 150ms;
+        }
+        .add-button:hover {
+          opacity: 0.8;
+          box-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+        }
+        .add-button:active {
+          opacity: 0.5;
+        }
+
+        /* SORT BUTTONS*/
+
+        .sort-buttons {
+          display: flex;
+          justify-content: end;
+        }
+        .up-arrow {
+          width: 35px;
+          height: 35px;
+          margin: 0 3px 5px 2px;
+          background-color: rgb(222, 222, 222);
+          border: 1px solid rgb(65, 65, 65);
+          border-radius: 3px;
+          color: rgb(65, 65, 65);
+          transition: all 150ms;
+        }
+        .up-arrow:hover {
+          box-shadow: 0 0 5px rgba(0, 0, 0, 0.6);
+          font-size: 18px;
+        }
+        .down-arrow {
+          width: 35px;
+          height: 35px;
+          margin: 0 2px 5px 2px;
+          background-color: rgb(222, 222, 222);
+          border: 1px solid rgb(65, 65, 65);
+          border-radius: 3px;
+          color: rgb(65, 65, 65);
+          transition: all 150ms;
+        }
+        .down-arrow:hover {
+          box-shadow: 0 0 5px rgba(0, 0, 0, 0.6);
+          font-size: 18px;
+        }
+
+        /* LIST */
+
+        .list {
+          font-family: Arial;
+          font-size: 18px;
+          line-height: 40px;
+          list-style-type:none;
+          padding: 0;
+          display: flex;
+          flex-direction: column;        
+          justify-content: start;
+        }
+        /* each separate to-do */
+        .task {
+          border-radius: 5px;
+          display: flex;
+          align-items: center;    
+          margin: 3px 0 3px 0;
+          box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
+          position: relative;
+          transition: all 150ms;
+        }
+        .task:hover,
+        .task:hover .delete-button,
+        .task:hover .edit-button,
+        .task:hover .edit-todo,
+        .task:hover .edit-date {
+          background-color: rgb(223, 222, 222);
+        }
+        .title {
+          flex: 1;
+          transition: all 150ms;
+          padding-left: 5px;
+        }
+        .no-title {
+          flex: 1;
+          transition: all 150ms;
+          padding-left: 5px;
+          font-size: 14px;
+          font-style: italic;
+        }
+        .date {
+          width: 125px;
+          font-size: 16px;
+          transition: all 150ms;
+          padding: 0 0px 0 0px;
+          text-align: center;
+        }
+        .no-date {
+          width: 125px;
+          font-size: 14px;
+          transition: all 150ms;
+          padding: 0 0px 0 0px;
+          text-align: center;
+          font-style: italic;
+        }
+        .delete-button {
+          background-color: white;
+          border: none;
+          padding: 5px;
+          transition: all 150ms;
+          font-size: 20px;
+          height: 40px;
+          width: 40px;
+          border-top-right-radius: 5px ;
+          border-bottom-right-radius: 5px;
+          cursor: pointer;
+          z-index: 10;
+        }
+        .delete-button:hover  {
+          box-shadow: 0 0 5px rgba(0, 0, 0, 0.6); 
+        }
+        .delete-button:active {
+          zoom: 105%;
+        }
+        .edit-button {
+          background-color: white;
+          border: none;
+          padding: 0 0 3px 0px;
+          transition: all 150ms;
+          font-size: 18px;
+          height: 40px;
+          width: 40px;
+          cursor: pointer;
+          z-index: 10;
+        }
+        .edit-button:hover  {
+          box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.6); 
+        }
+        .edit-button:active {
+          box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.6); 
+        }
+        .checkbox {
+          min-width: 8px;        
+          opacity: 0;
+          zoom: 200%;
+          z-index: 10;
+          cursor: pointer;
+        }
+        .coverBox {
+          position: absolute;
+          /* background-color: lightcoral; */
+          z-index: 9;
+          height: 40px;
+          width: 40px;
+          border-top-left-radius: 5px;
+          border-bottom-left-radius: 5px;
+          transition: all 150ms;
+          cursor: pointer;
+        }
+        .coverBox:after {
+          left: 18px;
+          top: 8px;
+          width: 6px;
+          height: 13px;
+          border: solid white;
+          border-width: 0 3px 3px 0;
+          transform: rotate(35deg);
+          content: "";
+          position: absolute;
+          display: flex;
+        }
+        .checkbox:hover {
+          background-color: lightgrey;
+        }
+        .checkbox:checked ~ .title,
+        .checkbox:checked ~ .no-title,
+        .checkbox:checked ~ .date,      
+        .checkbox:checked ~ .no-date,
+        .checkbox:checked ~ .checkbox,
+        .checkbox:checked ~ .coverBox {
+          background-color: rgb(65, 65, 65);
+          color: white;
+          text-decoration: line-through;
+        }
+        .checkbox:checked .task {
+          background-color: rgb(65, 65, 65);
+        }
+
+        .checkbox:checked ~ .delete-button {
+          background-color: rgb(65, 65, 65);
+          color: white;
+        }
+        .checkbox:checked ~ .delete-button:hover {
+          box-shadow: 0 0 5px rgba(0, 0, 0, 0.9); 
+        } 
+        .checkbox:checked ~ .delete-button:active {
+          zoom: 105%;
+        }
+        .checkbox:checked ~ .edit-button {
+          background-color: rgb(65, 65, 65);
+          color: white;
+        }
+        .checkbox:checked ~ .edit-button:hover {
+          box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.9); 
+        } 
+        .checkbox:checked ~ .coverBox:after {
+          display:flex;
+        }
+
+        /* UPDATE line */
+
+        .edit-todo {
+          flex: 1;
+          height: 40px;
+          font-family: Arial;
+          font-size: 18px;
+          border: none;
+          transition: all 150ms;
+          padding: 0 0 0 5px;
+          background-color: rgb(223, 222, 222);
+        }
+        .edit-todo:focus {
+          outline: none;
+          text-decoration:dotted ;
+        }
+        .edit-date {
+          border: none;
+          height: 40px;
+          font-family: Arial;
+          font-size: 16px;
+          transition: all 150ms;
+          background-color: rgb(223, 222, 222);
+          
+        }
+        .edit-date:focus {
+          outline: none;
+        }
+        .update-button {
+          font-size: 16px;
+          width: 80px;
+          height: 40px;
+          border: 1px solid white;
+          box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
+          border-top-right-radius: 5px;
+          border-bottom-right-radius: 5px;
+          background-color: rgb(65, 65, 65);
+          color: white;
+          transition: all 150ms;
+        }
+        .update-button:hover {
+          opacity: 0.8;
+          box-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+        }
+        .update-button:active {
+          opacity: 0.5;
+        }
+        .edit-pencil {
+          width: 40px;
+          height: 40px;
+          text-align: center;
+          padding: 0 0 0 0px;
+          color: white;
+          background-color: rgb(223, 222, 222);
+        }
+      </style>
+		</head>
+
+	<body>    
+
+    <main class="container">
+
+      <section class="add">
+        <input id="todo-title" type="text" placeholder="add your to-do..."/>
+        <input id="date-picker" type="date" />          
+        <button class="add-button" onclick="addTodo();">Add</button>
+      </section>
+      
+      <section id="todo-list" class="list"></section>
+    </main>
+
+    <script>
+      // MODEL SECTION
+      let todos;
+      let savedTodos = JSON.parse(localStorage.getItem('todos'));
+      
+      if (Array.isArray(savedTodos)) {
+        todos = savedTodos;
+      }
+      else {
+        todos = [{
+          title: 'get groceries',
+          dueDate: '2022-09-01',
+          id: 'id1',
+          isDone: false,
+          editMode: false
+        }, {
+          title: 'wash car',
+          dueDate: '2022-09-02',
+          id: 'id2',
+          isDone: false,
+          editMode: false
+        }, {
+          title: 'make dinner',
+          dueDate: '2022-09-03',
+          id: 'id3',
+          isDone: false,
+          editMode: false
+        }, {
+          title: 'do laundry',
+          dueDate: '2022-09-04',
+          id: 'id4',
+          isDone: false,
+          editMode: false
+        }];
+      }
+
+      // Creates a todo
+      const createTodo = (title, dueDate) => {
+        const id = '' + new Date().getTime();        
+        todos.push({
+          title: title,
+          dueDate: dueDate,
+          id: id,
+          isDone: false,
+          editMode: false
+        });
+        saveTodo();
+      }
+      // Deletes a todo
+      const removeTodo = idToDelete => {
+        todos = todos.filter(todo => {
+          return todo.id !== idToDelete;
+        });
+        saveTodo();
+      }
+      // Saves a todo
+      const saveTodo = () => {
+        localStorage.setItem('todos', JSON.stringify(todos));
+      }
+      // Toggles a todo
+      const toggleTodo = (id, status) => {
+        todos.forEach (todo => {
+          if (todo.id === id) {
+            todo.isDone = status;
+          }
+        });
+        saveTodo();
+      }
+      // Changes a todo
+      const changeTodo = (idToChange, textToChange, dateToChange) => {
+        todos.forEach (todo => {
+          if (todo.id === idToChange){
+            if (textToChange !== '') {
+              todo.title = textToChange;
+            }
+            if (dateToChange !== '') {
+              todo.dueDate = dateToChange;
+            }
+            todo.editMode = false;
+          }            
+        });
+        saveTodo();
+      }      
+      // Put a todo in an edit mode
+      const toEditMode = idToEdit => {
+        todos.forEach (todo => {
+          if (todo.id === idToEdit)
+            todo.editMode = true;
+        });        
+      }
+
+      // Sorts todos in descending order
+      const sortDesc = () => {
+        for (let i = 1; i < todos.length; i++) {
+          let object = todos[i];
+          let k = i;
+          for (let j = i-1; j >= 0; j--) {
+            if (object.dueDate > todos[j].dueDate) {
+              todos[k] = todos[j];
+              todos[j] = object;
+              k--;
+            } else {
+              break;
+            }
+          }
+        }
+      }
+
+      // Sorts in ascending order
+      const sortAsc = () => {
+        for (let i = 1; i < todos.length; i++) {
+          let object = todos[i];
+          let k = i;
+          for (let j = i-1; j >= 0; j--) {
+            if (object.dueDate < todos[j].dueDate) {
+              todos[k] = todos[j];
+              todos[j] = object;
+              k--;
+            } else {
+              break;
+            }
+          }
+        }
+      }
+
+      // VIEW SECTION
+			const addElement = () => {
+				// reset our todo-list	
+        document.getElementById('todo-list').innerHTML ='';
+        
+				todos.forEach (todo => {
+          const element = document.createElement('div');
+          element.className = 'task';
+
+          // renders in normal mode
+          if (todo.editMode === false) {
+
+            const text = document.createElement('div');            
+            if (todo.title === '' || todo.title === '(no title)') {
+                todo.title = '(no title)';
+                text.className = 'no-title';  
+            } else {
+                text.className = 'title';
+              }            
+            text.innerText = todo.title;
+            element.appendChild(text);
+
+            const date = document.createElement('div');
+            if (todo.dueDate === '' || todo.dueDate === '(no date)') {
+                todo.dueDate = '(no date)';
+                date.className = 'no-date';  
+            } else {
+                date.className = 'date';
+              }            
+            date.innerText = todo.dueDate;
+            element.appendChild(date);
+           
+
+            const coverCheckbox = document.createElement('div');
+            coverCheckbox.className = 'coverBox';
+            element.prepend(coverCheckbox);
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.className = 'checkbox';
+            checkbox.id = todo.id;  
+            checkbox.onchange = checkTodo;
+            if (todo.isDone === true) 
+              checkbox.checked = true;
+            else 
+              checkbox.checked = false;          
+            element.prepend(checkbox);
+
+            const editButton = document.createElement('button');
+            editButton.innerHTML = '&#9998;';
+            editButton.className = 'edit-button';
+            editButton.onclick = editTodo(todo);
+            element.append(editButton);
+
+            const deleteButton = document.createElement('button');
+            deleteButton.innerText = '\u00D7';
+            deleteButton.className = 'delete-button';
+            deleteButton.onclick = deleteTodo(todo);          
+            element.append(deleteButton);
+          }
+          // renders in edit mode
+          else {
+            const editTextbox = document.createElement('input');
+            editTextbox.value = todo.title;
+            editTextbox.onsubmit = updateEnter();
+            editTextbox.className = 'edit-todo';
+            editTextbox.id = 'edit-text-' + todo.id;
+            element.append(editTextbox);
+            
+            const datePicker = document.createElement('input');
+            datePicker.type = 'date';
+            datePicker.className = 'edit-date';
+            datePicker.value = todo.dueDate;
+            datePicker.id = 'edit-date-' + todo.id;          
+            element.append(datePicker);
+
+            const updateButton = document.createElement('button');
+            updateButton.innerText = 'Update';
+            updateButton.className = 'update-button';
+            updateButton.dataset.id = todo.id;
+            updateButton.onclick = updateTodo;
+            element.append(updateButton);
+
+            const editPencil = document.createElement('div');
+            editPencil.innerHTML = '&#9998;';
+            editPencil.className = 'edit-pencil';
+            element.prepend(editPencil);
+          }
+
+          const todoList = document.getElementById('todo-list');
+          todoList.appendChild(element);          
+			  });
+
+        if (todos.length !== 0) {
+          sortButtons();
+        }
+			}
+
+      const clearInput = () => {
+        const textbox = document.getElementById('todo-title');
+				textbox.value = '';
+
+        const datePicker = document.getElementById('date-picker');
+        datePicker.value = '';
+      }
+
+      const sortButtons = () => {
+        const sortButtonArea = document.createElement('div');
+        sortButtonArea.className = 'sort-buttons';
+
+        const upArrow = document.createElement('button');
+        upArrow.className = 'up-arrow';
+        upArrow.innerHTML = '&#8593';
+        upArrow.onclick = sortDateAsc;
+
+        const downArrow = document.createElement('button');
+        downArrow.className = 'down-arrow';
+        downArrow.innerHTML = '&#8595';
+        downArrow.onclick = sortDateDesc;
+
+        sortButtonArea.appendChild(downArrow);
+        sortButtonArea.appendChild(upArrow);        
+        
+        const todoList = document.getElementById('todo-list');
+        todoList.prepend(sortButtonArea);
+      }
+
+      // CONTROLLER SECTION
+			const addTodo = () => {
+				const textbox = document.getElementById('todo-title');
+        const title = textbox.value;
+        				
+        const datePicker = document.getElementById('date-picker');
+        const dueDate = datePicker.value;
+
+        createTodo(title, dueDate);
+				addElement();
+        clearInput();
+			}
+
+      // the example of closure
+      const deleteTodo = todoToDelete => {
+        return () => {
+          removeTodo(todoToDelete.id);
+          addElement();
+        } 
+      }
+
+      const checkTodo = event => {
+        const checkbox = event.target;
+        const idToCheck = checkbox.id;
+        const checkedStatus = checkbox.checked;
+
+        toggleTodo(idToCheck, checkedStatus);
+        addElement();
+      }
+
+      const editTodo = todoToEdit => {
+        return () => {
+          toEditMode(todoToEdit.id);
+          addElement();
+        }
+      }
+
+      const updateTodo = event => {
+        const updateButton = event.target;
+        const idToUpdate = updateButton.dataset.id;
+        
+        const textbox = document.getElementById('edit-text-' + idToUpdate);
+        const textToUpdate = textbox.value;
+
+        const datePicker = document.getElementById('edit-date-' + idToUpdate);
+        const dateToUpdate = datePicker.value;
+        
+        changeTodo(idToUpdate, textToUpdate, dateToUpdate);
+        addElement();        
+      }
+
+      const updateEnter = event => {
+        console.log('hello');
+        // const textbox = event.target;
+        // const idToUpdate = textbox.id;
+        // const textToUpdate = textbox.value;
+
+        // const datePicker = document.getElementById('edit-date-' + idToUpdate);
+        // const dateToUpdate = datePicker.value;
+        
+        // changeTodo(idToUpdate, textToUpdate, dateToUpdate);
+        // addElement();
+      }
+
+      const sortDateAsc = () => {        
+          sortAsc();
+          addElement();        
+      }
+
+      const sortDateDesc = () => {        
+          sortDesc();
+          addElement();        
+      }
+
+      // Main code
+      window.onload = addElement();
+    </script>
+		
+	</body>
+</html>
